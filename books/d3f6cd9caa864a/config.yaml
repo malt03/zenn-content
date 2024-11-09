@@ -57,12 +57,11 @@ topics: ["ディープラーニング", "ONNX", "Unity", "Rust", "モンテカ�
 published: false
 price: 1000
 chapters:
-  - 1_intro
-  - 2_environment
-  - 3_firstdeeplearning
-  - 4_mnist
-  - 5_creating_dataset
-  - 6_creating_model
-  - 7_unity
-  - 8_native_app
-  - 9_appendix
+  - 0_intro
+  - 1_firstdeeplearning
+  - 2_mnist
+  - 3_creating_dataset
+  - 4_creating_model
+  - 5_unity
+  - 6_native_app
+  - 7_appendix
