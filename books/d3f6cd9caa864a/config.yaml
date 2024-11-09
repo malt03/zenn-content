@@ -1,0 +1,19 @@
+title: "数式なし！はじめてのディープラーニング - スマホで動くオセロゲーム開発"
+summary: 
+  hoge
+  - アウェグァおいj＠
+  - fuga
+topics: ["ディープラーニング", "Onnx", "Unity", "Rust", "モンテカルロ木探索"]
+published: false
+price: 1000 # 有料の場合200〜5000
+# 本に含めるチャプターを順番に並べましょう
+chapters:
+  - 1.intro
+  - 2.environment
+  - 3.firstdeeplearning
+  - 4.mnist
+  - 5.creating_dataset
+  - 6.creating_model
+  - 7.unity
+  - 8.native_app
+  - 9.appendix
