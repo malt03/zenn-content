@@ -15,8 +15,16 @@ https://github.com/malt03/othello-book
 git clone https://github.com/malt03/othello-book.git
 ```
 
-# 環境構築
+# Discord
 
-本書では Python、Rust、Unity と様々な開発環境を構築する必要があります。
+本書に関して気軽に質問するための Discord サーバーを作成しました。  
+ぜひ参加してください。
 
-https://zenn.dev/malt03/books/d3f6cd9caa864a/viewer/999_environment
+https://discord.gg/5g9r6Kp2tN
+
+# トラブルシューティング
+
+リポジトリに含まれているコードが動かない場合は筆者の責任です。  
+正しく実行しているかだけを確認して、悩まずすぐに連絡してください。
+
+それでは始めましょう！
