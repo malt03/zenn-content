@@ -97,7 +97,7 @@ random_points, result = exec_for_random_points(model)
 1 行目で CSV ファイルからデータを読み込み、2 行目でモデルを作成、3 行目でモデルを訓練し、4 行目でランダムな座標に対して分類をしています。
 1 行目と 4 行目はどうでも良いので、2 行目から見ていきましょう。
 
-### PointClassifier2DSimple
+### `PointClassifier2DSimple`
 
 `construct_model` 内を見ると、引数に応じてコンストラクタを実行していることが分かります。  
 `PointClassifier2DSimple` クラスは、2D ポイントを分類するためのシンプルなニューラルネットワークのモデルです。このクラスの内部を見てみましょう。
@@ -151,9 +151,31 @@ sigmoid 関数は、どんな入力も 0 以上 1 以下の値になだらかに
 `squeeze`は、次元を操作する関数です。  
 ここでは、学習データと形式を合わせるために使用していますが、処理そのものには影響せず、あまり重要ではありません。
 
-#### PointClassifier2DSimple まとめ
+#### `PointClassifier2DSimple` まとめ
 
 このクラスは、シンプルな全結合層と sigmoid 関数を使って、2D データの二値分類を行うモデルで、分類結果が 0 以上 1 以下で返されます。  
 この値は「一方の分類である確率」を示しており、今回で言えば「青である確率」を表しています。
 
 実務上は、出力が 0.5 未満であれば A、0.5 以上であれば B といった形で、確率を基に最終的な分類を行います。
+
+### `train_model`
+
+どのようにモデルを定義するか理解したところで、次にモデルの訓練を見ていきましょう。
+
+```python:train.py
+def train_model(model, points, labels):
+    loss_fn = torch.nn.BCELoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+
+    for epoch in range(10001):
+        optimizer.zero_grad()
+        outputs = model(torch.Tensor(points))
+        loss = loss_fn(outputs, torch.Tensor(labels))
+        loss.backward()
+        optimizer.step()
+
+        if epoch % 1000 == 0:
+            print(f"Epoch {epoch}, Loss: {loss.item()}")
+```
+
+モデルのインスタンス（model）、ポイントデータ（points）と、それぞれのデータがどの分類に属するかを示すラベル（labels）を引数に取り、インスタンスを学習させます。
