@@ -33,27 +33,37 @@ uv run ./src/train.py ./data/linear.csv simple
 この時点でうまくいかない場合は、すぐに[筆者に連絡](https://zenn.dev/malt03/books/d3f6cd9caa864a/viewer/0_intro#discord)してください。
 
 ```
-Epoch 0, Loss: 0.6403065323829651
-Epoch 1000, Loss: 0.25011757016181946
-Epoch 2000, Loss: 0.1992986649274826
-Epoch 3000, Loss: 0.18215647339820862
-Epoch 4000, Loss: 0.17525357007980347
-Epoch 5000, Loss: 0.1726333498954773
-Epoch 6000, Loss: 0.17186947166919708
-Epoch 7000, Loss: 0.17174085974693298
-Epoch 8000, Loss: 0.17173294723033905
-Epoch 9000, Loss: 0.1717328280210495
-Epoch 10000, Loss: 0.1717328429222107
-2024-11-11 21:01:04.386 python3[16646:3955627] +[IMKClient subclass]: chose IMKClient_Legacy
-2024-11-11 21:01:04.386 python3[16646:3955627] +[IMKInputSession subclass]: chose IMKInputSession_Legacy
+Epoch 0, Loss: 0.8013088703155518
+Epoch 1000, Loss: 0.45744192600250244
+Epoch 2000, Loss: 0.3413170576095581
+Epoch 3000, Loss: 0.27807143330574036
+Epoch 4000, Loss: 0.24008016288280487
+Epoch 5000, Loss: 0.2156420350074768
+Epoch 6000, Loss: 0.19934573769569397
+Epoch 7000, Loss: 0.1883869767189026
+Epoch 8000, Loss: 0.1811341494321823
+Epoch 9000, Loss: 0.1765332669019699
+Epoch 10000, Loss: 0.173834890127182
+Epoch 11000, Loss: 0.17245401442050934
+Epoch 12000, Loss: 0.17189756035804749
+Epoch 13000, Loss: 0.17175136506557465
+Epoch 14000, Loss: 0.17173343896865845
+Epoch 15000, Loss: 0.1717328429222107
+Epoch 16000, Loss: 0.1717328429222107
+Epoch 17000, Loss: 0.1717328429222107
+Epoch 18000, Loss: 0.1717328429222107
+Epoch 19000, Loss: 0.1717328429222107
+Epoch 20000, Loss: 0.1717328429222107
+2024-11-14 23:24:55.320 python3[92135:11524095] +[IMKClient subclass]: chose IMKClient_Legacy
+2024-11-14 23:24:55.320 python3[92135:11524095] +[IMKInputSession subclass]: chose IMKInputSession_Legacy
 ```
 
 ![linear](/images/d3f6cd9caa864a/1_1_firstdeeplearning/linear.png)
 
 出力には「損失値（Loss）」と呼ばれる値を表示しています。これはモデルの学習精度を示す指標で、数値が小さいほど学習が進んでいることを意味します。  
-`train.py` では、一万回（Epoch）の訓練を行っています。
+`train.py` では、20,000 回（Epoch）の訓練を行っています。
 Epoch とは、モデルが全データを一通り学習することを 1 回と数えた単位です。今回は千回ごとに損失値を表示しています。  
-訓練が進むにつれて数値が小さくなり学習が進んでいること、五千回程度で学習が収束していることが確認できます。
+訓練が進むにつれて数値が小さくなり学習が進んでいること、13,000 回程度で学習が収束していることが確認できます。
 
 # 解説
 
@@ -81,7 +91,7 @@ Epoch とは、モデルが全データを一通り学習することを 1 回�
 uv run ./src/dump_points.py ./data/linear.csv
 ```
 
-`train.py` では、この平面上で境界線を探索し、作成した境界線を使ってランダムな 1000 個の座標を分類しています。
+`train.py` では、この平面上で境界線を探索し、作成した境界線を使ってランダムな 1,000 個の座標を分類しています。
 
 # コードを読む
 
@@ -168,9 +178,9 @@ sigmoid 関数は、どんな入力も 0 以上 1 以下の値になだらかに
 ```python:train.py
 def train_model(model, points, labels):
     loss_fn = torch.nn.BCELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0003)
 
-    for epoch in range(10001):
+    for epoch in range(20001):
         optimizer.zero_grad()
         outputs = model(points)
         loss = loss_fn(outputs, labels)
@@ -199,7 +209,7 @@ def train_model(model, points, labels):
 
 損失関数はほぼこの 3 つとその派生で事足ります。LLM の学習でも `CrossEntropyLoss` が使われています。
 
-#### `optimizer = torch.optim.Adam(model.parameters(), lr=0.01)`
+#### `optimizer = torch.optim.Adam(model.parameters(), lr=0.003)`
 
 ここでは「オプティマイザ」と呼ばれるものを設定しています。  
 損失値に応じて、重みやバイアスをどのような速度で調整するかを決定するアルゴリズム、と理解しておけば間違いではないでしょう。
