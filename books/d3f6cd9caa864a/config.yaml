@@ -63,6 +63,7 @@ chapters:
   - 0_intro
   - 1_1_firstdeeplearning
   - 1_2_firstdeeplearning
+  - 1_3_firstdeeplearning
   - 2_mnist
   - 3_creating_dataset
   - 4_creating_model
