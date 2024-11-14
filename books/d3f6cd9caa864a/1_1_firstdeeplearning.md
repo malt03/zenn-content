@@ -1,5 +1,5 @@
 ---
-title: "ディープラーニングの基礎 〜2Dポイント分類モデルで学ぶ〜"
+title: "ディープラーニングの基礎 - 最も単純な2Dポイント分類モデル"
 ---
 
 # ゴール
@@ -48,7 +48,7 @@ Epoch 10000, Loss: 0.1717328429222107
 2024-11-11 21:01:04.386 python3[16646:3955627] +[IMKInputSession subclass]: chose IMKInputSession_Legacy
 ```
 
-![linear](/images/d3f6cd9caa864a/1_firstdeeplearning/linear.png)
+![linear](/images/d3f6cd9caa864a/1_1_firstdeeplearning/linear.png)
 
 出力には「損失値（Loss）」と呼ばれる値を表示しています。これはモデルの学習精度を示す指標で、数値が小さいほど学習が進んでいることを意味します。  
 `train.py` では、一万回（Epoch）の訓練を行っています。
@@ -114,7 +114,7 @@ class PointClassifier2DSimple(torch.nn.Module):
         return data.squeeze()
 ```
 
-#### `__init__`メソッド
+#### `__init__` メソッド
 
 `__init__`メソッドは、クラスが作られたときに最初に呼び出されるコンストラクタです。  
 モデルを定義する際は、ここでモデルの基本となるニューラルネットワークの層を作成します。
