@@ -15,16 +15,11 @@ https://github.com/malt03/othello-book
 git clone https://github.com/malt03/othello-book.git
 ```
 
-# Discord
-
-本書に関して気軽に質問するための Discord サーバーを作成しました。  
-ぜひ参加してください。
-
-https://discord.gg/5g9r6Kp2tN
-
 # トラブルシューティング
 
 リポジトリに含まれているコードが動かない場合は筆者の責任です。  
 正しく実行しているかだけを確認して、悩まずすぐに連絡してください。
+
+https://x.com/malt03
 
 それでは始めましょう！
