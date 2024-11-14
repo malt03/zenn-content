@@ -172,8 +172,8 @@ def train_model(model, points, labels):
 
     for epoch in range(10001):
         optimizer.zero_grad()
-        outputs = model(torch.Tensor(points))
-        loss = loss_fn(outputs, torch.Tensor(labels))
+        outputs = model(points)
+        loss = loss_fn(outputs, labels)
         loss.backward()
         optimizer.step()
 
@@ -211,3 +211,16 @@ def train_model(model, points, labels):
 学習を何度か走らせてみて調整しましょう。
 
 #### for ループ
+
+for ループの中身は学習におけるお決まりのコードなので、あまり深く考えず何となくの理解で大丈夫です。
+
+- `optimizer.zero_grad()`
+  - 学習開始のおまじない。
+- `outputs = model(points)`
+  - モデルにデータを入力し、出力を取得します。これは今の時点のモデルがデータに基づいて出した分類の予測です。
+- `loss = loss_fn(outputs, labels)`
+  - モデルの出力と期待される正解値から損失を計算します。この値が小さいほど、モデルの出力が正解値に近いことを示します。
+- `loss.backward()`
+  - 損失に基づいて学習の方向を計算します。「最適な調整方向を計算できる」ことがディープラーニングの革命的なところです。
+- `optimizer.step()`
+  - 学習の方向に向けてモデルのパラメータを更新します。これを繰り返すことで、モデルがデータに適応していきます。
