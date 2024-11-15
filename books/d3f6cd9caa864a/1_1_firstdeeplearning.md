@@ -30,7 +30,7 @@ uv run ./src/train.py ./data/linear.csv simple
 ```
 
 以下のような出力とグラフが表示されれば、正しく実行できています。  
-この時点でうまくいかない場合は、すぐに[筆者に連絡](https://zenn.dev/malt03/books/d3f6cd9caa864a/viewer/0_intro#discord)してください。
+この時点でうまくいかない場合は、すぐに[筆者に連絡](https://zenn.dev/malt03/books/d3f6cd9caa864a/viewer/0_intro#%E3%83%88%E3%83%A9%E3%83%96%E3%83%AB%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0)してください。
 
 ```
 Epoch 0, Loss: 0.8013088703155518
