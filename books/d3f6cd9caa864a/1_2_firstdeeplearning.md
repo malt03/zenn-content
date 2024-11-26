@@ -229,3 +229,73 @@ N 次元空間上の複雑な山を、低い方、低い方へと下っていく
 
 余裕があれば、損失関数やオプティマイザを変更してみるのも学びになるでしょう。
 試行を通して、さまざまな要素がモデルの学習にどのように影響するかを確認してみてください。
+
+### トラブルシューティング
+
+モデルを変更する中で各層の入出力の大きさを変更していると、以下のようなエラーによく遭遇します。
+
+```
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (200x64 and 128x128)
+```
+
+モデルを以下のように変更して発生させました。
+
+```python:train.py
+class PointClassifier2DComplex(torch.nn.Module):
+    def __init__(self):
+        super(PointClassifier2DComplex, self).__init__()
+        self.fc1 = torch.nn.Linear(2, 64)
+        self.fc2 = torch.nn.Linear(128, 128)
+        self.fc3 = torch.nn.Linear(128, 1)
+```
+
+このエラーは、期待するサイズの `data` が入力されなかったために計算できない(`cannot be multiplied`)と発生します。
+モデルを調整する際、最初のうちはこのエラーを頻繁に発生させてしまうと思います。
+
+そんな時は、前章でも紹介した公式リファレンスを確認しましょう。
+https://pytorch.org/docs/stable/generated/torch.nn.Linear.html
+
+注目すべきは `Shape` の項目です。
+ここには期待する入力の行列の大きさと、出力する行列の大きさが記載されています。
+ちょっと難しげですが、書いてあることは単純なので、踏ん張りどころです。
+
+全結合層は `(*, in_features)` の大きさの行列を入力すると、 `(*, out_features)` の行列を出力する、と記載されています。
+試しに、行列の大きさを表示してみましょう。
+
+```python:train.py
+    def forward(self, data):
+        print(data.shape)
+        data = self.fc1(data)
+        print(data.shape)
+        data = torch.relu(data)
+        data = self.fc2(data)
+        data = torch.relu(data)
+        data = self.fc3(data)
+        data = torch.sigmoid(data)
+        return data.squeeze()
+```
+
+```
+torch.Size([200, 2])
+torch.Size([200, 64])
+```
+
+関数に入力された `data` の大きさは `(200, 2)`、 `fc1` で変換された後は `(200, 64)` になっていることがわかります。
+今回は学習データが全部で 200 件あり、その全てを一気に学習しています。
+各行に 2 つの要素を持っていますから、`(200, 2)` のデータが入力されています。
+そして、それを `fc1` で変換し、 `(200, 64)` のサイズに変換していることが確認できました。
+
+`fc1` の出力数が 64 になっており、`fc2` の入力数である 128 と一致していません。
+それでは、`fc2` の入力サイズも変更しましょう。
+
+```python:train.py
+class PointClassifier2DComplex(torch.nn.Module):
+    def __init__(self):
+        super(PointClassifier2DComplex, self).__init__()
+        self.fc1 = torch.nn.Linear(2, 64)
+        self.fc2 = torch.nn.Linear(64, 128)
+        self.fc3 = torch.nn.Linear(128, 1)
+```
+
+これで無事動くようになったはずです。
+このように、エラーが起きたらまずは公式リファレンスを確認し、実際の計算途中の行列の大きさをダンプして、行列が想定したサイズになっているか確認するようにしましょう。
