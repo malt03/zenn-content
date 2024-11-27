@@ -201,11 +201,11 @@ def train_model(model, points, labels):
 
 損失関数も様々な種類が存在しますが、よく使われるものは限られています。
 
-|       名前       | 適した問題               | 予測する値の例                 |
-| :--------------: | :----------------------- | :----------------------------- |
-|     BCELoss      | 二値分類問題             | スパムか否か、画像内の人の有無 |
-| CrossEntropyLoss | 多値分類問題             | 手書き数字、テキストの言語     |
-|     MSELoss      | 回帰問題（連続値の予測） | 株価、気温                     |
+|                                             名前                                             | 適した問題               | 予測する値の例                 |
+| :------------------------------------------------------------------------------------------: | :----------------------- | :----------------------------- |
+|          [BCELoss](https://pytorch.org/docs/stable/generated/torch.nn.BCELoss.html)          | 二値分類問題             | スパムか否か、画像内の人の有無 |
+| [CrossEntropyLoss](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html) | 多値分類問題             | 手書き数字、テキストの言語     |
+|          [MSELoss](https://pytorch.org/docs/stable/generated/torch.nn.MSELoss.html)          | 回帰問題（連続値の予測） | 株価、気温                     |
 
 今回は二値分類問題ですから、`BCELoss` を使っています。
 
