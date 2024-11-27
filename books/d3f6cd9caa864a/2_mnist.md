@@ -2,9 +2,8 @@
 title: "手書き数字の分類"
 ---
 
-# ゴール
-
-この章のゴールは、画像分類モデルを
+この章のゴールは、ディープラーニングを使ったモデル作成の基本的な流れを理解することです。
+実際に画像分類モデルを作成しながら学びます。
 
 # 開発環境
 
@@ -61,7 +60,7 @@ uv run ./src/train.py
 
 ### 学習曲線
 
-最後に出力された学習曲線について説明していきます。
+出力された学習曲線について説明していきます。
 
 このグラフには、各エポックごとの学習の状況を記録して表示しています。
 こういったグラフは、実際の学習でも必ず作成して学習がうまくいっているかを確認します。
@@ -193,3 +192,83 @@ uv run ./src/train.py
   |   [MSELoss](https://pytorch.org/docs/stable/generated/torch.nn.MSELoss.html)   | 誤差の二乗                        | ノイズや外れ値が少ない                 |
   |    [L1Loss](https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html)    | 誤差の絶対値                      | ノイズや外れ値が含まれる               |
   | [HuberLoss](https://pytorch.org/docs/stable/generated/torch.nn.HuberLoss.html) | 小さいときは MSE、大きいときは L1 | 外れ値が含まれるが、それほど極端でない |
+
+- **活性化関数を見直す**
+  活性化関数には一般的に [`ReLU`](https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html) が使われてきましたが、それに変わる様々な活性化関数が開発されています。筆者が試す中では [`Mish`](https://pytorch.org/docs/stable/generated/torch.nn.Mish.html) は良い性能を発揮することが多いです。`ReLU` に比べて計算コストが増加しますが、可能ならば試してみるのが良いでしょう。
+- **オプティマイザを見直す**
+  活性化関数と同様に、オプティマイザも様々なものが開発されています。[`Adam`](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html) はとても良いオプティマイザなので、とりあえず選ぶには最適な選択でしょう。
+  他にも [`AdamW`](https://pytorch.org/docs/stable/generated/torch.optim.AdamW.html) や [`RAdam`](https://pytorch.org/docs/stable/generated/torch.optim.RAdam.html)、最新のものでは [`Lion`](https://github.com/lucidrains/lion-pytorch)（PyTorch には未実装）というオプティマイザが開発されたりしています。
+
+# コードを読む
+
+今回も main 関数から見ていきます。
+
+```python:train.py
+def main():
+    train_data, test_data = load_data()
+
+    model = Mnist()
+    train_losses, test_losses, test_accuracies = train_model(
+        model, train_data, test_data
+    )
+    show_results(train_losses, test_losses, test_accuracies)
+```
+
+ここの実装は前章と変わりません。
+今回も `load_data` の中身は重要ではありませんが、 `train_data` と `test_data` が返ってきていることに注目してください。
+トレーニングデータとテストデータが、それぞれ画像の入力とそれに対するラベルの配列を持っています。
+
+### `Mnist`
+
+MNIST を分類するためのモデルを作成しています。
+
+#### `__init__` メソッド
+
+```python:train.ppy
+def __init__(self):
+    super(Mnist, self).__init__()
+    self.conv1 = torch.nn.Conv2d(1, 4, kernel_size=3)
+    self.conv2 = torch.nn.Conv2d(4, 8, kernel_size=3)
+    self.conv3 = torch.nn.Conv2d(8, 16, kernel_size=3)
+
+    self.fc = torch.nn.Linear(16, 1)
+```
+
+今回は 2 次元の画像データですから、畳み込み層（Conv2d）を利用します。
+畳み込み層を重ねて作成したモデルを畳み込みニューラルネットワーク（CNN）と呼びます。
+
+畳み込みニューラルネットワークでは、データは以下の図のように変換されていきます。
+
+![CNN](/images/d3f6cd9caa864a/2_mnist/CNN.png =150x)
+
+畳み込み層は、画像全体をカーネルと呼ばれる、3x3 や 2x2 の小さなまとまりに分解し、それを深さを持った 1 つのピクセルに変換します。
+上記の図では、2x2 のカーネルを 4 の深さを持ったピクセルに変換しています。
+変換したデータを、またカーネルに分解してさらに深い 1 つのピクセルへとまとめていきます。
+
+これにより、上の層では画像の部分部分の特徴を学習し、下の層に行くに従って画像全体の特徴を学習することができます。
+
+最後に、1x1 の深いデータを全結合層を使って出力に変換します。
+
+#### `__forward__` メソッド
+
+```python:train.ppy
+def forward(self, data):
+    data = self.conv1(data)
+    data = torch.relu(data)
+    data = torch.max_pool2d(data, kernel_size=2)
+    data = self.conv2(data)
+    data = torch.relu(data)
+    data = torch.max_pool2d(data, kernel_size=2)
+    data = self.conv3(data)
+    data = torch.relu(data)
+    data = torch.max_pool2d(data, kernel_size=2)
+    data = data.view(-1, 16)
+    data = self.fc(data)
+    data = torch.sigmoid(data)
+    return data.squeeze()
+```
+
+実際にデータを流していきます。
+
+畳み込み層と活性化関数の次に `max_pool2d` という関数が挟まっています。この関数は、与えられたカーネルサイズの中で最も大きい値のみを残す関数です。
+CNN でよく使われる関数で、今は詳しく理解する必要はありませんが、これにより画像データを縮小しながら重要な特徴を保持することが可能です。計算量が減り、モデルが効率的に学習できるようになります。
