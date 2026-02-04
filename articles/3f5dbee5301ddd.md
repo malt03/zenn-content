@@ -110,3 +110,10 @@ Apple の Credential Provider Extension 実装にはバグがあり、正確な�
 
 本来、このアプリは存在する必要はありません。Apple が Passkey をローカルに保存するオプションを作ってくれればそれで終わりです。
 もしこの記事とかがバズって問題視され、Apple がネイティブで提供してくれたら最高ですね。
+
+## 参考
+
+- [Device-Bound vs. Synced Credentials: A Comparative Evaluation](https://arxiv.org/html/2501.07380v1) - University of Oslo
+- [Detecting Compromise of Passkey Storage on the Cloud](https://www.microsoft.com/en-us/research/video/detecting-compromise-of-passkey-storage-on-the-cloud/) - Microsoft Research
+- [Your Passkey is Weak](https://yourpasskeyisweak.com/) - DEF CON 33
+- [How Attackers Bypass Synced Passkeys](https://thehackernews.com/2025/10/how-attackers-bypass-synced-passkeys.html) - The Hacker News
