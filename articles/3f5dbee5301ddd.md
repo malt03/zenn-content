@@ -3,7 +3,7 @@ title: "現在のパスキーは単一障害点である"
 emoji: "🔐"
 type: "tech"
 topics: ["セキュリティ", "passkey", "macOS", "WebAuthn"]
-published: false
+published: true
 ---
 
 ## パスキーは二要素認証をスキップ
