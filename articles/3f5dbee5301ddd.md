@@ -92,6 +92,9 @@ guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error)
 セキュリティを向上させるために個人開発者を信頼するのもどうかと思うので、コードを読んで自分でビルドすることをオススメします。確認すべきは[鍵生成のコード](https://github.com/malt03/local-passkey-manager/blob/v1.0.0/CredentialProvider/Sources/Registration.swift#L70-L97)だけです。鍵が抽出不可能な方法で保存されていることを確認してください。
 もしも僕のことを信頼できる場合は[リリース](https://github.com/malt03/local-passkey-manager/releases)から dmg ファイルをダウンロードしてインストールも可能です。
 
+追記：App Store の審査も通りました！
+https://apps.apple.com/app/id6758674190
+
 ### セットアップ
 
 1. **システム設定** > **一般** > **自動入力とパスワード** を開く
