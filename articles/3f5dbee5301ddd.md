@@ -121,7 +121,7 @@ Apple の Credential Provider Extension 実装にはバグがあり、正確な�
 - [Your (Synced) Passkey is Weak](https://yourpasskeyisweak.com/) - DEFCON 33
 - [How Attackers Bypass Synced Passkeys](https://thehackernews.com/2025/10/how-attackers-bypass-synced-passkeys.html) - The Hacker News
 
-## 追記：パスキー一本化という選択肢
+## 追記：同期されたパスキーへ一本化という選択肢
 
 記事公開後、僕にとって完全に新しいアプローチを提案するコメントをいただきました。
 当該コメントは悲しいことに投稿後すぐに削除されてしまいましたが、素晴らしい内容だったので、ここに僕の理解を記しておきます。
