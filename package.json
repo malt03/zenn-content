@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/malt03/zenn-content#readme",
   "dependencies": {
-    "zenn-cli": "^0.2.1"
+    "zenn-cli": "^0.4.5"
   }
 }
